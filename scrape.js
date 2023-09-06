@@ -58,15 +58,45 @@ let auction_hover =
     if (hrefValue) {
       // Use page.goto to navigate to the URL specified in the href attribute
       await page.goto(website_url + hrefValue);
-      
-      // Now you are on the new page, and you can perform actions or extract data as needed.
-      await page.waitForSelector('img')// wait for an image to appear
 
-      await page.waitForTimeout(2000); 
+      // Now you are on the new page, and you can perform actions or extract data as needed.
+      await page.waitForSelector("img"); // wait for an image to appear
+
+      await page.waitForXPath('//*[@id="top"]');
+
+      await page.waitForTimeout(2000);
+
+      // Locate the HTML element that contains the image
+      const imageElement = await page.$(
+        'a[pref-code="lotDetailsPreference.allowDownloadImages"]'
+      );
+
+      if (imageElement) {
+        // Extract the URL of the image from the href attribute
+        const imageUrl = await imageElement.evaluate((element) =>
+          element.getAttribute("href")
+        );
+
+        // Use Puppeteer to initiate the download
+        await page._client.send("Page.setDownloadBehavior", {
+          behavior: "allow",
+          downloadPath: "./downloads",
+        });
+        await page.goto(imageUrl);
+
+        // Wait for a moment to ensure the download is complete (you can add a more sophisticated mechanism if needed)
+        await page.waitForTimeout(5000);
+
+        console.log("Image downloaded successfully.");
+      } else {
+        console.log("Image element not found on the page.");
+      }
 
       await page.screenshot({
         path: "screenshotOnCarPage.jpg",
       });
+
+      //console.log("This is the current url: " + await page.url());
     }
     
 
