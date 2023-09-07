@@ -3,6 +3,9 @@
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require('puppeteer-extra')
 
+const fs = require('fs');
+const path = require('path');
+
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin());
@@ -18,6 +21,7 @@ puppeteer.use(StealthPlugin());
     const page = await browser.newPage();
 
     //Navigation items
+    let topLevelSite = 'https://www.copart.com'
 const website_url =
   "https://www.copart.com/vehicleFinderSearch?searchStr=%7B%22MISC%22:%5B%22%23VehicleTypeCode:VEHTYPE_V%22,%22%23DamageTypeCode:DAMAGECODE_FR%22,%22%23OdometerReading:%5B0%20TO%209999999%5D%22,%22%23LotYear:%5B2013%20TO%202024%5D%22%5D,%22sortByZip%22:false,%22buyerEnteredZip%22:null,%22milesAway%22:null%7D%20&displayStr=FRONT%20END,%5B0%20TO%209999999%5D,%5B2013%20TO%202024%5D&from=%2FvehicleFinder";
 
@@ -57,32 +61,27 @@ let auction_hover =
 
     if (hrefValue) {
       // Use page.goto to navigate to the URL specified in the href attribute
-      await page.goto(website_url + hrefValue);
+      await page.goto(topLevelSite + hrefValue);
 
       // Now you are on the new page, and you can perform actions or extract data as needed.
-      await page.waitForSelector("img"); // wait for an image to appear
+      console.log("This is the current url: " + await page.url());
 
       await page.waitForXPath('//*[@id="top"]');
 
       await page.waitForTimeout(2000);
 
       // Locate the HTML element that contains the image
-      const imageElement = await page.$(
-        'a[pref-code="lotDetailsPreference.allowDownloadImages"]'
-      );
+      const imageElement = await page.$('#show-img');
 
       if (imageElement) {
         // Extract the URL of the image from the href attribute
         const imageUrl = await imageElement.evaluate((element) =>
-          element.getAttribute("href")
+          element.getAttribute("src")
         );
-
-        // Use Puppeteer to initiate the download
-        await page._client.send("Page.setDownloadBehavior", {
-          behavior: "allow",
-          downloadPath: "./downloads",
-        });
-        await page.goto(imageUrl);
+        
+        console.log(imageElement)
+        console.log(imageUrl);
+        page.goto(imageUrl)
 
         // Wait for a moment to ensure the download is complete (you can add a more sophisticated mechanism if needed)
         await page.waitForTimeout(5000);
@@ -96,7 +95,7 @@ let auction_hover =
         path: "screenshotOnCarPage.jpg",
       });
 
-      //console.log("This is the current url: " + await page.url());
+      
     }
     
 
