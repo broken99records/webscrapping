@@ -3,8 +3,6 @@
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require('puppeteer-extra')
 
-const fs = require('fs');
-const path = require('path');
 
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
@@ -22,6 +20,7 @@ puppeteer.use(StealthPlugin());
 
     //Navigation items
     let topLevelSite = 'https://www.copart.com'
+    
 const website_url =
   "https://www.copart.com/vehicleFinderSearch?searchStr=%7B%22MISC%22:%5B%22%23VehicleTypeCode:VEHTYPE_V%22,%22%23DamageTypeCode:DAMAGECODE_FR%22,%22%23OdometerReading:%5B0%20TO%209999999%5D%22,%22%23LotYear:%5B2013%20TO%202024%5D%22%5D,%22sortByZip%22:false,%22buyerEnteredZip%22:null,%22milesAway%22:null%7D%20&displayStr=FRONT%20END,%5B0%20TO%209999999%5D,%5B2013%20TO%202024%5D&from=%2FvehicleFinder";
 
