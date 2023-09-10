@@ -24,7 +24,7 @@ const tweetText = async () => {
 		// Use .tweet() method and pass the
 		// text you want to post
 		await rwClient.v2.tweet(
-			"This tweet has been created using nodejs");
+			"This tweet is for a test");
 
 		console.log("success");
 	} catch (error) {
@@ -47,9 +47,11 @@ const mediaTweet = async () => {
 		// Use tweet() method and pass object with text
 		// in text feild and media items in media feild
 		await rwClient.v2.tweet({
-			text:
-"This tweet has been created using nodejs, just testing!",
+			text:"This tweet has been created using vscode, just testing!",
+
 			media: { media_ids: [mediaId] },
+
+     
 		});
 		console.log("success");
 	} catch (error) {
