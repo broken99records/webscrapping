@@ -1,0 +1,6 @@
+# Ignore .env file
+.env
+
+# Ignore other files and directories as needed
+/node_modules/
+/build/
