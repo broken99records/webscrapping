@@ -1,6 +1,7 @@
 // Import twitter-api-v2
 const { TwitterApi } = require("twitter-api-v2");
 
+//using .env file
 require('dotenv').config();
 
 // Fill your API credentials
@@ -40,14 +41,14 @@ const mediaTweet = async () => {
 		const mediaId = await client.v1.uploadMedia(
 
 			// Put path of image you wish to post
-			"./1605232393098780672example.png"
+			"./screenshotOnCarPage.jpg"
 		);
 
 		// Use tweet() method and pass object with text
 		// in text feild and media items in media feild
 		await rwClient.v2.tweet({
 			text:
-"Twitter is a fantastic social network. Look at this:",
+"This tweet has been created using nodejs, just testing!",
 			media: { media_ids: [mediaId] },
 		});
 		console.log("success");
@@ -57,5 +58,5 @@ const mediaTweet = async () => {
 };
 
 // Call any of methods and you are done
-tweetText();
-//mediaTweet();
+//tweetText();
+mediaTweet();
